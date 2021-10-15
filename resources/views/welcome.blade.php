@@ -3,15 +3,15 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Esign is an API that allow users to admin your paperworks">
-        <meta name="title" content="Esign API">
+        <meta name="title" content="Taski">
+        <meta name="description" content="Taski is an Open Source agenda">
         <meta name="author" content="Jose Francisco Paredes">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Esign API</title>
+        <title>Taski API</title>
         <link rel="shortcut icon" href="{{ asset('/images/brand.png') }}" type="image/x-icon">
 
         <style>

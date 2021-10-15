@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Traits\AuthTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\Auth\ForgotPassword\ResetPasswordLink;
+use App\Mail\Auth\ForgotPassword\ResetedPasswordNotification;
+use App\Mail\Auth\EmailVerification\EmailVerifiedNotification;
 
 class AuthController extends Controller
 {
@@ -118,7 +122,7 @@ class AuthController extends Controller
                     $user->email_verified_at = Carbon::now();
                     $user->save();
 
-                    // PENDING CODE TO SEND EMAIL FOR EMAIL VERIFICATION
+                    Mail::to($user->email)->send(new EmailVerifiedNotification($user));
 
                     return response()->json([
                         'message'   => 'User email verified successfully',
@@ -183,7 +187,7 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)->firstOrFail();
             $token = auth()->tokenById($user->id);
 
-            // PENDING CODE FOR SENDING EMAIL FOR PASSWORD RESET
+             Mail::to($user->email)->send(new ResetPasswordLink($token, $user));
 
             return response()->json([ 'message' => 'Password reset email send successfully.' ], 200);
 
@@ -210,7 +214,7 @@ class AuthController extends Controller
                 $user->password = Hash::make($request->password);
                 $user->save();
 
-                // PENDING CODE TO SEND EMAIL FOR NOTIFICATION OF PASSWORD UPDATED
+                Mail::to($user->email)->send(new ResetedPasswordNotification($user));
 
                 return response()->json([ 'message' => 'Password updated successfully' ], 200);
             });
